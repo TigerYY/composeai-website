@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>构图大师 ComposeAI - AI智能构图相机</title>
+    <meta name="description" content="构图大师ComposeAI是一款AI驱动的智能构图相机应用，提供实时构图分析、智能裁剪和美感评分功能，让每一张照片都成为艺术品。">
+    <meta name="keywords" content="AI相机,智能构图,照片编辑,构图分析,美感评分,ComposeAI">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-camera"></i>
+                <span>构图大师</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">首页</a>
+                <a href="#features" class="nav-link">功能</a>
+                <a href="#download" class="nav-link">下载</a>
+                <a href="#contact" class="nav-link">联系</a>
+                <div class="language-switch">
+                    <button onclick="switchLanguage('zh')" class="lang-btn active">中文</button>
+                    <button onclick="switchLanguage('en')" class="lang-btn">English</button>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title" data-zh="用AI重新定义摄影构图" data-en="Redefine Photography Composition with AI">用AI重新定义摄影构图</h1>
+                <p class="hero-subtitle" data-zh="构图大师ComposeAI运用先进的人工智能技术，为您提供实时构图分析、智能裁剪建议和美感评分，让每一张照片都成为艺术品。" data-en="ComposeAI uses advanced AI technology to provide real-time composition analysis, intelligent cropping suggestions, and aesthetic scoring to turn every photo into a work of art.">构图大师ComposeAI运用先进的人工智能技术，为您提供实时构图分析、智能裁剪建议和美感评分，让每一张照片都成为艺术品。</p>
+                <div class="hero-buttons">
+                    <a href="#download" class="btn btn-primary">
+                        <i class="fab fa-apple"></i>
+                        <span data-zh="App Store下载" data-en="Download on App Store">App Store下载</span>
+                    </a>
+                    <a href="#features" class="btn btn-secondary">
+                        <span data-zh="了解更多" data-en="Learn More">了解更多</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="app-interface">
+                            <div class="camera-viewfinder">
+                                <div class="grid-lines"></div>
+                                <div class="focus-point"></div>
+                                <div class="composition-guide"></div>
+                            </div>
+                            <div class="ai-analysis">
+                                <div class="score-display">美感评分: 8.5/10</div>
+                                <div class="suggestion">建议: 向左移动主体</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-zh="核心功能" data-en="Core Features">核心功能</h2>
+                <p data-zh="AI驱动的智能摄影助手，让专业构图触手可及" data-en="AI-powered intelligent photography assistant that makes professional composition accessible">AI驱动的智能摄影助手，让专业构图触手可及</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 data-zh="实时AI构图分析" data-en="Real-time AI Composition Analysis">实时AI构图分析</h3>
+                    <p data-zh="基于深度学习的构图分析引擎，实时识别画面元素并提供专业构图建议" data-en="Deep learning-based composition analysis engine that identifies image elements in real-time and provides professional composition suggestions">基于深度学习的构图分析引擎，实时识别画面元素并提供专业构图建议</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-crop-alt"></i>
+                    </div>
+                    <h3 data-zh="智能裁剪建议" data-en="Intelligent Cropping Suggestions">智能裁剪建议</h3>
+                    <p data-zh="AI自动识别最佳裁剪区域，遵循黄金比例和三分法则，一键获得完美构图" data-en="AI automatically identifies optimal cropping areas, following golden ratio and rule of thirds for perfect composition with one tap">AI自动识别最佳裁剪区域，遵循黄金比例和三分法则，一键获得完美构图</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 data-zh="美感评分系统" data-en="Aesthetic Scoring System">美感评分系统</h3>
+                    <p data-zh="基于艺术理论和大数据训练的美感评分算法，客观评估照片的视觉吸引力" data-en="Aesthetic scoring algorithm based on art theory and big data training, objectively evaluating the visual appeal of photos">基于艺术理论和大数据训练的美感评分算法，客观评估照片的视觉吸引力</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 data-zh="隐私保护" data-en="Privacy Protection">隐私保护</h3>
+                    <p data-zh="所有AI处理均在设备本地完成，照片数据不会上传到云端，确保您的隐私安全" data-en="All AI processing is completed locally on the device, photo data is not uploaded to the cloud, ensuring your privacy and security">所有AI处理均在设备本地完成，照片数据不会上传到云端，确保您的隐私安全</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 data-zh="简洁易用" data-en="Simple and Easy to Use">简洁易用</h3>
+                    <p data-zh="直观的用户界面设计，无需专业摄影知识，新手也能快速上手拍出好照片" data-en="Intuitive user interface design, no professional photography knowledge required, beginners can quickly get started and take great photos">直观的用户界面设计，无需专业摄影知识，新手也能快速上手拍出好照片</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <h3 data-zh="多语言支持" data-en="Multi-language Support">多语言支持</h3>
+                    <p data-zh="支持中文和英文界面，满足不同用户的语言需求，提供本地化体验" data-en="Supports Chinese and English interfaces, meeting different users' language needs and providing localized experience">支持中文和英文界面，满足不同用户的语言需求，提供本地化体验</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-zh="工作原理" data-en="How It Works">工作原理</h2>
+                <p data-zh="三步即可获得专业级构图效果" data-en="Three steps to achieve professional composition effects">三步即可获得专业级构图效果</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3 data-zh="打开相机" data-en="Open Camera">打开相机</h3>
+                        <p data-zh="启动应用，AI引擎自动激活" data-en="Launch the app, AI engine automatically activates">启动应用，AI引擎自动激活</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3 data-zh="实时分析" data-en="Real-time Analysis">实时分析</h3>
+                        <p data-zh="AI实时分析画面构图并显示评分" data-en="AI analyzes composition in real-time and displays scores">AI实时分析画面构图并显示评分</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3 data-zh="优化拍摄" data-en="Optimize Shooting">优化拍摄</h3>
+                        <p data-zh="根据建议调整构图，拍出完美照片" data-en="Adjust composition based on suggestions, capture perfect photos">根据建议调整构图，拍出完美照片</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download">
+        <div class="container">
+            <div class="download-content">
+                <h2 data-zh="立即下载" data-en="Download Now">立即下载</h2>
+                <p data-zh="开始您的AI摄影之旅，让每一张照片都成为艺术品" data-en="Start your AI photography journey and turn every photo into a work of art">开始您的AI摄影之旅，让每一张照片都成为艺术品</p>
+                <div class="download-buttons">
+                    <a href="https://apps.apple.com/app/composeai" class="download-btn" target="_blank">
+                        <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="Download on App Store">
+                    </a>
+                </div>
+                <div class="download-info">
+                    <div class="info-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span data-zh="支持 iOS 14.0+" data-en="Requires iOS 14.0+">支持 iOS 14.0+</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-download"></i>
+                        <span data-zh="免费下载" data-en="Free Download">免费下载</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-language"></i>
+                        <span data-zh="中英双语" data-en="Chinese & English">中英双语</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-zh="联系我们" data-en="Contact Us">联系我们</h2>
+                <p data-zh="有任何问题或建议？我们很乐意听到您的声音" data-en="Have any questions or suggestions? We'd love to hear from you">有任何问题或建议？我们很乐意听到您的声音</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4 data-zh="邮箱" data-en="Email">邮箱</h4>
+                            <p>support@composeai.app</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <div>
+                            <h4 data-zh="隐私政策" data-en="Privacy Policy">隐私政策</h4>
+                            <a href="privacy.html" data-zh="查看隐私政策" data-en="View Privacy Policy">查看隐私政策</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-file-contract"></i>
+                        <div>
+                            <h4 data-zh="服务条款" data-en="Terms of Service">服务条款</h4>
+                            <a href="terms.html" data-zh="查看服务条款" data-en="View Terms of Service">查看服务条款</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-camera"></i>
+                    <span>构图大师 ComposeAI</span>
+                </div>
+                <div class="footer-text">
+                    <p data-zh="© 2024 构图大师 ComposeAI. 保留所有权利。" data-en="© 2024 ComposeAI. All rights reserved.">© 2024 构图大师 ComposeAI. 保留所有权利。</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

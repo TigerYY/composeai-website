@@ -569,6 +569,21 @@ html {
     font-size: 0.9rem;
 }
 
+.footer-text .icp-info {
+    margin-top: 10px;
+}
+
+.footer-text .icp-info a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s ease;
+}
+
+.footer-text .icp-info a:hover {
+    color: #cbd5e1;
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {

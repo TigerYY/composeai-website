@@ -656,3 +656,9 @@ curl -w "@curl-format.txt" -o /dev/null -s https://composeai.app
 **部署完成后，您的构图大师ComposeAI官方网站将在互联网上稳定运行！**
 
 记住定期备份数据、更新系统和监控网站状态。
+
+# 同步当前目录到远程服务器（会删除远程多余文件）
+rsync -avz --delete ./ yy@composeai.net:/var/www/composeai/
+
+# 或者不删除远程多余文件
+rsync -avz ./ yy@composeai.net:/var/www/composeai/

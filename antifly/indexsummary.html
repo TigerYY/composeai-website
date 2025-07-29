@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一体化低空智能防御系统综合信息图</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- 
+        Application Structure Plan: This infographic synthesizes three source documents into a single, cohesive narrative. The structure follows a logical top-down flow: starting with the macro-level threat, moving to high-level design principles, diving into a detailed exploration of the system's layers, showcasing the AI core, and finally grounding the concepts in practical deployment and simulation. A key innovation is the integration of simulation details directly within the technology explorer section. This allows users to see not just what a technology is, but how it's modeled and tested, creating a bridge between theory and practice. This thematic integration provides a much richer, more holistic understanding than presenting the simulation plan as a separate, disconnected chapter.
+    -->
+    <!-- 
+        Visualization & Content Choices: 
+        - Threat Actors: Goal: Inform -> Viz: Donut Chart -> Justification: Clearly shows the composition of threat types. (Chart.js, Canvas, No SVG).
+        - Layered Defense: Goal: Organize -> Viz: HTML/CSS Flow Diagram -> Justification: Visually explains the multi-step defense process in a clean, non-SVG manner.
+        - Technology Explorer: Goal: Compare/Organize -> Viz: Tabbed Interface with Cards -> Justification: Transforms static tables into a modern explorer. Each card now includes a 'Simulation' section, directly linking real-world tech to its virtual counterpart. (HTML/CSS/JS, No SVG).
+        - Detection Tech Comparison: Goal: Compare -> Viz: Radar Chart -> Justification: Excellent for comparing multiple metrics across several items. (Chart.js, Canvas, No SVG).
+        - Simulation Stack: Goal: Organize -> Viz: HTML/CSS Diagram -> Justification: Clearly visualizes the relationship between different software components in the simulation environment. (No SVG).
+        - Deployment Scenarios: Goal: Compare -> Viz: Tabbed Interface -> Justification: Allows for easy, direct comparison of strategies for different environments. (HTML/CSS/JS, No SVG).
+        All choices adhere to the NO SVG/Mermaid constraint and prioritize clarity and engagement.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F0F4F8; /* Light blue-gray background */
+            color: #1E293B; /* Slate 800 */
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flow-arrow {
+            font-size: 2rem;
+            line-height: 1;
+            color: #94A3B8; /* Slate 400 */
+        }
+        .scenario-tab.active {
+            border-color: #0A4D68;
+            color: #0A4D68;
+            font-weight: 700;
+        }
+        .tech-stack-item {
+            border: 1px solid #CBD5E1;
+            background-color: #F8FAFC;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#0A4D68] mb-4">一体化低空智能防御系统综合蓝图</h1>
+            <p class="text-lg md:text-xl text-slate-600 max-w-4xl mx-auto">一份融合顶层设计、AI核心、实战部署与开发仿真的全景式工程实施指南，旨在构建应对未来低空威胁的动态防御能力。</p>
+        </header>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">演进中的非对称威胁</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-[#088395] mb-4">威胁行为体光谱</h3>
+                    <p class="text-slate-600 mb-6">无人机威胁的意图横跨从无意到蓄意的广阔光谱。防御系统必须能够识别并应对不同层级的威胁，其中无意的误闯者占比最高，但蓄意的敌对行为危害最大。</p>
+                    <div class="h-64 md:h-72"><canvas id="threatActorsChart"></canvas></div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="font-bold text-lg text-[#05BFDB]">成本与效能的不平衡</h4>
+                        <p class="text-slate-600 mt-2">攻击方可用数百美元的无人机，对价值数百万的关键基础设施构成严重威胁，形成典型的非对称成本挑战。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="font-bold text-lg text-[#05BFDB]">传统探测系统的“盲区”</h4>
+                        <p class="text-slate-600 mt-2">“低、慢、小”目标极易被地面杂波淹没，传统防空雷达难以有效探测，虚警率高。</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <h4 class="font-bold text-lg text-[#05BFDB]">威胁形态的快速迭代</h4>
+                        <p class="text-slate-600 mt-2">从RF遥控到自主飞行，再到AI赋能的蜂群攻击，威胁技术和战术的演进速度对防御系统的适应性提出严峻考验。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">分层防御：构建纵深防御体系 (OODA)</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-12">我们采用“观察-判断-决策-行动”闭环理念，构建五层防御架构。通过技术互补，对威胁进行逐层过滤、逐级确认，实现高效、低成本的渐进式响应。</p>
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4">
+                <div class="text-center flex-1">
+                    <div class="bg-[#0A4D68] text-white w-24 h-24 rounded-full mx-auto flex items-center justify-center text-xl font-bold shadow-lg">观察</div>
+                    <h4 class="font-bold text-lg mt-4">远程探测</h4>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="text-center flex-1">
+                     <div class="bg-[#088395] text-white w-24 h-24 rounded-full mx-auto flex items-center justify-center text-xl font-bold shadow-lg">判断</div>
+                    <h4 class="font-bold text-lg mt-4">中程跟踪/分类</h4>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="text-center flex-1">
+                    <div class="bg-[#05BFDB] text-white w-24 h-24 rounded-full mx-auto flex items-center justify-center text-xl font-bold shadow-lg">决策</div>
+                    <h4 class="font-bold text-lg mt-4">近程识别/评估</h4>
+                </div>
+                <div class="flow-arrow hidden md:block">→</div>
+                <div class="text-center flex-1">
+                    <div class="bg-red-500 text-white w-24 h-24 rounded-full mx-auto flex items-center justify-center text-xl font-bold shadow-lg">行动</div>
+                    <h4 class="font-bold text-lg mt-4">分级处置</h4>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">技术武库：从现实到仿真</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-[#088395] mb-4 text-center">探测技术性能对比</h3>
+                     <p class="text-slate-600 mb-6 text-sm text-center">任何单一探测技术都存在短板。雷达看得远，但有杂波；RF能识别型号，但怕静默；光电能确认，但受天气影响。多技术融合是唯一出路。</p>
+                    <div class="chart-container"><canvas id="detectionTechChart"></canvas></div>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-[#088395] mb-4 text-center">处置技术适用性对比</h3>
+                     <p class="text-slate-600 mb-6 text-sm text-center">处置手段分为软、硬杀伤。软杀伤附带损伤低，是城市首选；硬杀伤效果直接，更适用于军事区。选择何种手段取决于场景和法律授权。</p>
+                    <div class="chart-container"><canvas id="mitigationTechChart"></canvas></div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">系统组件与仿真复现</h2>
+            <div id="tech-explorer" class="space-y-8">
+            </div>
+        </section>
+        
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">仿真开发环境技术栈</h2>
+            <p class="text-center text-slate-600 max-w-3xl mx-auto mb-12">为实现高保真模拟，我们在macOS上利用容器化技术和开源工具链，搭建了一套完整的开发与测试平台。</p>
+            <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="tech-stack-item p-4 rounded-lg">
+                    <div class="text-3xl">🐳</div>
+                    <h4 class="font-semibold mt-2">Docker</h4>
+                    <p class="text-xs text-slate-500">容器化环境</p>
+                </div>
+                <div class="tech-stack-item p-4 rounded-lg">
+                    <div class="text-3xl">🤖</div>
+                    <h4 class="font-semibold mt-2">ROS 2 / Gazebo</h4>
+                    <p class="text-xs text-slate-500">物理仿真与通信</p>
+                </div>
+                 <div class="tech-stack-item p-4 rounded-lg">
+                    <div class="text-3xl">🐍</div>
+                    <h4 class="font-semibold mt-2">Python & FastAPI</h4>
+                    <p class="text-xs text-slate-500">核心语言与后端</p>
+                </div>
+                <div class="tech-stack-item p-4 rounded-lg">
+                    <div class="text-3xl">🧠</div>
+                    <h4 class="font-semibold mt-2">PyTorch & YOLOv8</h4>
+                    <p class="text-xs text-slate-500">AI视觉识别</p>
+                </div>
+                <div class="tech-stack-item p-4 rounded-lg">
+                    <div class="text-3xl">📈</div>
+                    <h4 class="font-semibold mt-2">Streamlit</h4>
+                    <p class="text-xs text-slate-500">前端仪表盘</p>
+                </div>
+                 <div class="tech-stack-item p-4 rounded-lg">
+                    <div class="text-3xl">🗺️</div>
+                    <h4 class="font-semibold mt-2">Pydeck</h4>
+                    <p class="text-xs text-slate-500">3D态势可视化</p>
+                </div>
+                <div class="tech-stack-item p-4 rounded-lg">
+                    <div class="text-3xl">📉</div>
+                    <h4 class="font-semibold mt-2">PyKalman</h4>
+                    <p class="text-xs text-slate-500">数据融合算法</p>
+                </div>
+                <div class="tech-stack-item p-4 rounded-lg">
+                    <div class="text-3xl">💻</div>
+                    <h4 class="font-semibold mt-2">VS Code</h4>
+                    <p class="text-xs text-slate-500">开发环境</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-12">实战部署：面向中国关键场景的方案</h2>
+            <div class="max-w-5xl mx-auto">
+                <div class="mb-8 flex justify-center border-b border-slate-300">
+                    <button data-tab="airport" class="scenario-tab active text-lg font-medium py-3 px-6 border-b-2">✈️ 机场要地</button>
+                    <button data-tab="gov" class="scenario-tab text-lg font-medium py-3 px-6 border-b-2 border-transparent text-slate-500 hover:text-[#0A4D68]">🏛️ 政府要地/城市</button>
+                    <button data-tab="event" class="scenario-tab text-lg font-medium py-3 px-6 border-b-2 border-transparent text-slate-500 hover:text-[#0A4D68]">🏟️ 重大活动</button>
+                </div>
+                <div id="scenario-content-wrapper" class="bg-white p-8 rounded-xl shadow-lg transition-all duration-300">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-12">战略基石：确保长期工程可行性</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="font-bold text-lg text-[#088395]">📜 合法合规</h4>
+                    <p class="text-slate-600 mt-2 text-sm">严格遵循《无人驾驶航空器飞行管理暂行条例》，确保所有操作获得合法授权。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="font-bold text-lg text-[#088395]">🧩 模块化开放架构 (MOSA)</h4>
+                    <p class="text-slate-600 mt-2 text-sm">避免供应商锁定，通过标准化接口实现“即插即用”式技术升级，降低全生命周期成本。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="font-bold text-lg text-[#088395]">💰 经济性考量 (TCO vs. CaaS)</h4>
+                    <p class="text-slate-600 mt-2 text-sm">评估全生命周期成本(TCO)。对于临时需求，可采用“反无人机即服务”(CaaS)模式。</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <h4 class="font-bold text-lg text-[#088395]">👨‍🏫 人机融合与培训</h4>
+                    <p class="text-slate-600 mt-2 text-sm">设计以人为中心的界面，并对操作员进行体系化培训，确保系统效能最大化。</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer class="text-center py-8 text-slate-500 text-sm">
+        <p>一体化低空智能防御系统综合信息图 &copy; 2025</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const chartColors = {
+            blue1: '#0A4D68', blue2: '#088395', blue3: '#05BFDB',
+            teal: '#00FFC6', slate400: '#94A3B8', slate600: '#475569',
+            red: '#EF4444', amber: '#F59E0B'
+        };
+
+        const createTooltipCallback = () => ({
+            plugins: { tooltip: { callbacks: {
+                title: function(items) {
+                    const item = items[0];
+                    if (!item) return '';
+                    let label = item.chart.data.labels[item.dataIndex];
+                    return Array.isArray(label) ? label.join(' ') : label;
+                }
+            }}}
+        });
+        
+        const wrapLabel = (label) => {
+            if (typeof label !== 'string' || label.length <= 16) return label;
+            const words = label.split(/\s+/);
+            let lines = [], currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+        
+        const threatActorsChartCtx = document.getElementById('threatActorsChart');
+        if (threatActorsChartCtx) {
+            new Chart(threatActorsChartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['无知/无意者', '犯罪/非法活动', ['恐怖主义/', '敌对行为']],
+                    datasets: [{
+                        data: [70, 25, 5],
+                        backgroundColor: [chartColors.blue3, chartColors.amber, chartColors.red],
+                        borderColor: '#F0F4F8', borderWidth: 4, hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, cutout: '60%',
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: chartColors.slate600, font: { size: 14 }}},
+                        ...createTooltipCallback().plugins
+                    }
+                }
+            });
+        }
+        
+        const detectionTechChartCtx = document.getElementById('detectionTechChart');
+        if (detectionTechChartCtx) {
+            new Chart(detectionTechChartCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['作用距离', ['全天候', '能力'], '识别精度', ['应对自主', '飞行能力'], '相对成本'],
+                    datasets: [
+                        { label: '雷达', data: [9, 9, 6, 9, 8], backgroundColor: 'rgba(10, 77, 104, 0.2)', borderColor: chartColors.blue1, pointBackgroundColor: chartColors.blue1 },
+                        { label: 'RF射频', data: [7, 9, 8, 2, 4], backgroundColor: 'rgba(8, 131, 149, 0.2)', borderColor: chartColors.blue2, pointBackgroundColor: chartColors.blue2 },
+                        { label: '光电/红外', data: [5, 4, 9, 9, 6], backgroundColor: 'rgba(5, 191, 219, 0.2)', borderColor: chartColors.blue3, pointBackgroundColor: chartColors.blue3 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { color: chartColors.slate600 }}, ...createTooltipCallback().plugins },
+                    scales: { r: {
+                        angleLines: { color: '#E2E8F0' }, grid: { color: '#E2E8F0' },
+                        pointLabels: { color: chartColors.slate600, font: { size: 12 } },
+                        ticks: { backdropColor: 'rgba(240, 244, 248, 0.75)', color: chartColors.slate400, stepSize: 2 },
+                        suggestedMin: 0, suggestedMax: 10
+                    }}
+                }
+            });
+        }
+
+        const mitigationTechChartCtx = document.getElementById('mitigationTechChart');
+        if (mitigationTechChartCtx) {
+            new Chart(mitigationTechChartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['RF干扰', '协议接管', ['高能', '激光'], ['动能武器', '(含捕捉网)']].map(wrapLabel),
+                    datasets: [
+                        { label: '城市适用性', data: [9, 10, 6, 3], backgroundColor: chartColors.blue3 },
+                        { label: '附带损伤风险 (越低越好)', data: [3, 1, 2, 8], backgroundColor: chartColors.amber }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+                    scales: { x: { beginAtZero: true, max: 10, grid: { color: '#E2E8F0' }}, y: { grid: { display: false }}},
+                    plugins: { legend: { position: 'bottom', labels: { color: chartColors.slate600 }}, ...createTooltipCallback().plugins }
+                }
+            });
+        }
+        
+        const techData = [
+            {
+                category: '感知探测单元',
+                icon: '📡',
+                items: [
+                    { name: '有源相控阵雷达', role: '远程预警核心。提供广域、全天候、高精度的早期预警和目标指示。', sim: '在Gazebo中模拟信号遮挡，通过Python节点基于无人机状态加入高斯噪声和虚警，生成模拟点迹。' },
+                    { name: '被动射频(RF)探测', role: '识别型号与定位飞手。被动式探测，识别主流无人机品牌型号，并对飞手进行测向。', sim: '基于无人机预设型号生成JSON数据，信号强度与距离成反比，并模拟城市电磁干扰。' },
+                    { name: '光电/红外联动云台', role: '精确识别与取证。在雷达/RF引导下，进行可视化确认，识别载荷，留存法律证据。', sim: '利用Gazebo内置摄像机插件输出视频流，通过图像处理节点转换为模拟红外效果。' }
+                ]
+            },
+            {
+                category: '指挥控制单元',
+                icon: '🧠',
+                items: [
+                    { name: '“御空”智能指控平台', role: '系统的“大脑”，负责数据融合、威胁评估与辅助决策。', sim: '后端用FastAPI接收ROS 2数据，PyKalman进行数据融合，YOLOv8识别视频流，前端用Streamlit和Pydeck进行3D可视化。' },
+                ]
+            },
+            {
+                category: '打击处置单元',
+                icon: '🎯',
+                items: [
+                    { name: '定向射频干扰', role: '区域拒止/迫降。低附带损伤，适用性广。', sim: '前端点击按钮，后端通过ROS 2发布指令，仿真无人机执行“失控悬停”或“强制返航”行为。' },
+                    { name: '无人机协议接管', role: '精准捕获。安全性最高，零附带损伤。', sim: '前端点击按钮，后端发布指令，仿真无人机改变航线，飞向预设的“安全降落区”。' },
+                ]
+            }
+        ];
+        
+        const techExplorer = document.getElementById('tech-explorer');
+        if (techExplorer) {
+            techData.forEach(cat => {
+                let itemsHtml = '';
+                cat.items.forEach(item => {
+                    itemsHtml += `
+                        <div class="bg-white p-6 rounded-lg shadow-md transition hover:shadow-xl">
+                            <h4 class="font-bold text-lg text-[#05BFDB]">${item.name}</h4>
+                            <p class="mt-2 text-slate-600 text-sm">${item.role}</p>
+                            <div class="mt-4 pt-4 border-t border-slate-200">
+                                <h5 class="font-semibold text-sm text-slate-500 mb-1">仿真复现</h5>
+                                <p class="text-xs text-slate-500">${item.sim}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                techExplorer.innerHTML += `
+                    <div class="bg-slate-50 p-6 rounded-xl shadow-inner">
+                         <h3 class="text-2xl font-bold mb-6 text-[#088395] flex items-center"><span class="text-3xl mr-4">${cat.icon}</span>${cat.category}</h3>
+                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${itemsHtml}</div>
+                    </div>
+                `;
+            });
+        }
+
+        const scenarioTabs = document.querySelectorAll('.scenario-tab');
+        const scenarioContentWrapper = document.getElementById('scenario-content-wrapper');
+        const scenarioData = {
+            airport: { title: '✈️ 机场要地：安全第一，效率优先', content: '<p class="mb-4 text-slate-600"><strong>核心挑战：</strong>地域广阔，空域繁忙，任何处置都绝不能影响民航安全。</p><ul class="list-disc list-inside space-y-2 text-slate-700"><li><strong>布局策略：</strong>沿围界部署远程雷达构成预警圈，在跑道两端、航路下方部署光电进行重点监控。</li><li><strong>集成方案：</strong>与空管系统对接，接收ADS-B等“白名单”信息，自动过滤合法航班。</li><li><strong>处置原则：</strong>以<strong>定向RF干扰</strong>迫使无人机返航/降落为主，<strong>协议接管</strong>为辅。严格限制硬杀伤手段。</li></ul>' },
+            gov: { title: '🏛️ 政府要地/城市：零附带损伤是底线', content: '<p class="mb-4 text-slate-600"><strong>核心挑战：</strong>“城市峡谷”效应导致视线遮挡和信号干扰严重，且人口密集，对附带损伤零容忍。</p><ul class="list-disc list-inside space-y-2 text-slate-700"><li><strong>布局策略：</strong>采用“网格化、高点位”部署，在多栋建筑顶部部署小型传感器形成交叉覆盖。</li><li><strong>集成方案：</strong>与公安指挥中心联动，一旦捕获无人机，可立即通知地面警力前往处置飞手。</li><li><strong>处置原则：</strong><strong>协议接管</strong>是唯一推荐的主动处置手段，安全性最高。其次是持续跟踪、定位飞手。</li></ul>' },
+            event: { title: '🏟️ 重大活动：快速部署，灵活应对', content: '<p class="mb-4 text-slate-600"><strong>核心挑战：</strong>时间短、任务重，安保需求是临时性的，需要快速形成防御能力。</p><ul class="list-disc list-inside space-y-2 text-slate-700"><li><strong>布局策略：</strong>以高机动性车载系统为主，活动前快速机动至制高点展开，辅以若干便携式探测器。</li><li><strong>商业模式：</strong>可采用“反无人机即服务”(CaaS)模式，由专业团队提供全流程服务，成本效益高。</li><li><strong>处置原则：</strong>根据现场人群密度，灵活结合使用<strong>定向干扰</strong>和<strong>协议接管</strong>。</li></ul>' }
+        };
+
+        const updateScenarioContent = (tabId) => {
+            const data = scenarioData[tabId];
+            if (scenarioContentWrapper && data) {
+                scenarioContentWrapper.innerHTML = `<h3 class="text-2xl font-bold text-[#0A4D68] mb-6">${data.title}</h3><div>${data.content}</div>`;
+            }
+        };
+
+        scenarioTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                scenarioTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                updateScenarioContent(tab.dataset.tab);
+            });
+        });
+        
+        if (scenarioTabs.length > 0) {
+            updateScenarioContent('airport');
+        }
+    });
+    </script>
+</body>
+</html>

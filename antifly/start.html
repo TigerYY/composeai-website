@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>低空无人机智能防御系统信息图</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F0F4F8; 
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flow-arrow {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flow-arrow::after {
+            content: '▼';
+            font-size: 24px;
+            color: #4195E0;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #0076D4; 
+            border: 2px solid white;
+        }
+        .timeline-line {
+            position: absolute;
+            left: -16px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #8AC3F0;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-[#00449E] mb-4">低空无人机智能防御系统蓝图</h1>
+            <p class="text-lg text-[#005CB9] max-w-3xl mx-auto">应对“低、慢、小”无人机威胁的工程可实施性设计</p>
+        </header>
+
+        <main>
+            
+            <section id="threat" class="mb-16">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-[#00449E] mb-4 text-center">第一部分：演进中的非对称威胁</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">低成本商用无人机对高价值关键基础设施构成了严重威胁，形成了极端的成本与效能不平衡。这种非对称性是现代低空防御的核心挑战。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="text-center">
+                            <h3 class="text-2xl font-semibold text-[#005CB9] mb-2">成本与效能的极端不平衡</h3>
+                            <p class="text-gray-600 mb-4">攻击方仅需数百美元即可威胁价值数百万美元的资产，传统防御手段效费比极低。</p>
+                            <div class="flex justify-center items-end space-x-8">
+                                <div class="text-center">
+                                    <span class="text-5xl font-bold text-[#0076D4]">✈️</span>
+                                    <p class="font-bold text-lg mt-2">攻击成本</p>
+                                    <p class="text-2xl font-bold text-[#0076D4]">$500</p>
+                                </div>
+                                <div class="text-center text-5xl font-bold text-gray-400">vs</div>
+                                <div class="text-center">
+                                    <span class="text-5xl font-bold text-[#00449E]">🏭</span>
+                                    <p class="font-bold text-lg mt-2">资产价值</p>
+                                    <p class="text-2xl font-bold text-[#00449E]">$5,000,000+</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container h-64 md:h-80">
+                            <canvas id="threatActorsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="framework" class="mb-16">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-[#00449E] mb-6 text-center">第二部分：分层防御体系架构</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">任何单一技术都无法应对所有威胁。现代C-UAS系统采用分层防御理念，构建一个从外到内、逐级确认的纵深防御网络。</p>
+                    <div class="w-full max-w-4xl mx-auto">
+                        <div class="relative p-4">
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-[500px] h-[500px] md:w-[600px] md:h-[600px] border-4 border-dashed border-[#8AC3F0]/50 rounded-full animate-pulse"></div>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-[400px] h-[400px] md:w-[500px] md:h-[500px] border-4 border-dashed border-[#4195E0]/60 rounded-full animate-pulse delay-75"></div>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-[300px] h-[300px] md:w-[400px] md:h-[400px] border-4 border-dashed border-[#0076D4]/70 rounded-full animate-pulse delay-150"></div>
+                            </div>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="w-[200px] h-[200px] md:w-[300px] md:h-[300px] border-4 border-dashed border-[#005CB9]/80 rounded-full animate-pulse delay-200"></div>
+                            </div>
+                            
+                            <div class="relative grid grid-cols-1 gap-4 text-center">
+                                <div class="p-3 bg-[#00449E]/90 text-white rounded-lg shadow-md z-10 w-40 h-40 md:w-48 md:h-48 mx-auto flex flex-col justify-center items-center">
+                                    <h4 class="font-bold text-lg">核心资产</h4>
+                                    <p class="text-sm">关键基础设施</p>
+                                </div>
+                                
+                                <div class="absolute top-[-90px] left-1/2 -translate-x-1/2 w-60 p-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-md z-10">
+                                    <h4 class="font-bold text-[#005CB9]">第5层：处置</h4>
+                                    <p class="text-sm text-gray-600">实施软/硬杀伤</p>
+                                </div>
+
+                                <div class="absolute right-[-100px] top-1/2 -translate-y-1/2 w-60 p-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-md z-10">
+                                    <h4 class="font-bold text-[#0076D4]">第3/4层：识别/C2</h4>
+                                    <p class="text-sm text-gray-600">确认威胁, 辅助决策</p>
+                                </div>
+
+                                <div class="absolute bottom-[-90px] left-1/2 -translate-x-1/2 w-60 p-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-md z-10">
+                                    <h4 class="font-bold text-[#4195E0]">第2层：跟踪/分类</h4>
+                                    <p class="text-sm text-gray-600">建立航迹, 过滤非威胁</p>
+                                </div>
+                                
+                                <div class="absolute left-[-100px] top-1/2 -translate-y-1/2 w-60 p-3 bg-white/90 backdrop-blur-sm rounded-lg shadow-md z-10">
+                                    <h4 class="font-bold text-[#8AC3F0]">第1层：远程探测</h4>
+                                    <p class="text-sm text-gray-600">提供早期预警</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="technology" class="mb-16">
+                 <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-[#00449E] mb-6 text-center">第三部分：技术武库比较分析</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">探测和处置技术各有优劣。科学的系统设计在于整合互补技术，实现1+1>2的效果。</p>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-2xl font-semibold text-[#005CB9] mb-4 text-center">探测、跟踪与识别(DTI)技术</h3>
+                            <div class="chart-container">
+                                <canvas id="dtiTechChart"></canvas>
+                            </div>
+                             <p class="text-center text-sm text-gray-500 mt-4">雷达、RF、光电和声学传感器在作用距离、全天候能力等方面形成互补，AI融合是关键。</p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-semibold text-[#005CB9] mb-4 text-center">处置(效应器)技术</h3>
+                            <div class="chart-container">
+                                <canvas id="mitigationTechChart"></canvas>
+                            </div>
+                             <p class="text-center text-sm text-gray-500 mt-4">处置手段分为低附带损伤的软杀伤和高风险的硬杀伤，需根据环境和法规审慎选择。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="ai-core" class="mb-16">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-[#00449E] mb-6 text-center">第四部分：AI赋能的智能核心</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">AI是C-UAS系统的“大脑”，负责将海量、嘈杂的传感器数据转化为清晰、准确、可执行的战术情报，从而大幅加速OODA决策循环。</p>
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <p class="text-4xl">📡</p>
+                                <p class="font-semibold text-[#005CB9]">雷达数据</p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <p class="text-4xl">📻</p>
+                                <p class="font-semibold text-[#005CB9]">RF信号</p>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <p class="text-4xl">📷</p>
+                                <p class="font-semibold text-[#005CB9]">光电/红外</p>
+                            </div>
+                             <div class="bg-blue-50 p-4 rounded-lg">
+                                <p class="text-4xl">🔊</p>
+                                <p class="font-semibold text-[#005CB9]">声学信号</p>
+                            </div>
+                        </div>
+
+                        <div class="text-5xl text-[#0076D4] font-bold mx-8">➡️</div>
+                        
+                        <div class="bg-[#0076D4] text-white p-6 rounded-full flex flex-col items-center justify-center w-48 h-48 shadow-2xl">
+                            <p class="text-4xl">🧠</p>
+                            <h3 class="text-2xl font-bold">AI核心</h3>
+                            <p class="text-sm">数据融合与决策</p>
+                        </div>
+
+                        <div class="text-5xl text-[#0076D4] font-bold mx-8">➡️</div>
+
+                        <div class="text-center bg-gray-100 p-6 rounded-lg shadow-inner">
+                             <h3 class="text-2xl font-bold text-[#00449E] mb-2">统一态势图 (COP)</h3>
+                             <p class="text-gray-600">✅ 提升探测概率</p>
+                             <p class="text-gray-600">✅ 降低虚警率</p>
+                             <p class="text-gray-600">✅ 威胁等级评估</p>
+                             <p class="text-gray-600">✅ 辅助决策建议</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="mosa" class="mb-16">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-[#00449E] mb-6 text-center">第五部分：模块化开放系统架构(MOSA)</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">为应对快速迭代的威胁，系统必须具备长期适应性。MOSA通过标准化接口实现“即插即用”，打破供应商锁定，降低全生命周期成本。</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="border-4 border-red-400 border-dashed p-6 rounded-lg text-center">
+                            <h3 class="text-2xl font-semibold text-red-600 mb-4">传统“黑盒”系统 👎</h3>
+                            <div class="bg-gray-700 text-white p-8 rounded-lg">
+                                <p class="font-bold text-lg">单一供应商系统</p>
+                                <p class="text-sm">(接口专有)</p>
+                            </div>
+                            <ul class="mt-4 text-left space-y-2 list-disc list-inside text-gray-700">
+                                <li>供应商锁定</li>
+                                <li>技术更新缓慢且昂贵</li>
+                                <li>全生命周期成本(TCO)高</li>
+                            </ul>
+                        </div>
+                        <div class="border-4 border-green-400 border-dashed p-6 rounded-lg text-center">
+                            <h3 class="text-2xl font-semibold text-green-600 mb-4">MOSA开放架构 👍</h3>
+                            <div class="bg-[#0076D4] p-4 rounded-lg grid grid-cols-2 gap-2">
+                                <div class="bg-white text-black p-2 rounded">雷达模块A</div>
+                                <div class="bg-white text-black p-2 rounded">RF模块B</div>
+                                <div class="bg-white text-black p-2 rounded">AI算法C</div>
+                                <div class="bg-white text-black p-2 rounded">C2软件D</div>
+                            </div>
+                            <ul class="mt-4 text-left space-y-2 list-disc list-inside text-gray-700">
+                                <li>促进竞争，降低成本</li>
+                                <li>快速技术迭代与升级</li>
+                                <li>提升互操作性与可持续性</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="deployment" class="mb-16">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-[#00449E] mb-6 text-center">第六部分：作战部署策略比较</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">不同部署场景对技术选型、传感器布局和作战概念有着截然不同的要求。</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-[#0076D4] text-white">
+                                    <th class="p-3 font-semibold">环境因素</th>
+                                    <th class="p-3 font-semibold">机场部署策略</th>
+                                    <th class="p-3 font-semibold">城市部署策略</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-3 font-medium text-[#005CB9]">传感器布局</td>
+                                    <td class="p-3">纵深分层，外围部署远程传感器</td>
+                                    <td class="p-3">网格化、分布式，传感器高位部署</td>
+                                </tr>
+                                <tr class="bg-gray-50 border-b border-gray-200">
+                                    <td class="p-3 font-medium text-[#005CB9]">主要探测技术</td>
+                                    <td class="p-3">雷达 (远程预警), RF, EO/IR</td>
+                                    <td class="p-3">雷达 (Ku波段), EO/IR, RF (辅助)</td>
+                                </tr>
+                                <tr class="border-b border-gray-200">
+                                    <td class="p-3 font-medium text-[#005CB9]">主要处置技术</td>
+                                    <td class="p-3">软杀伤 (干扰、接管) 为主</td>
+                                    <td class="p-3">软杀伤 (协议接管) 为首选</td>
+                                </tr>
+                                <tr class="bg-gray-50">
+                                    <td class="p-3 font-medium text-[#005CB9]">关键集成点</td>
+                                    <td class="p-3">与空中交通管理(ATM)系统集成</td>
+                                    <td class="p-3">与城市应急指挥中心、公安系统集成</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="roadmap" class="mb-16">
+                 <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-[#00449E] mb-6 text-center">第七部分：分阶段实施路线图</h2>
+                    <p class="text-center text-gray-600 mb-8 max-w-2xl mx-auto">采用分阶段、循序渐进的部署方式，能够更好地控制成本、管理风险，实现“边建边用、以用促建”的良性循环。</p>
+                    <div class="relative pl-8">
+                        <div class="timeline-line"></div>
+                        <div class="space-y-12">
+                            <div class="timeline-item relative">
+                                <h3 class="text-2xl font-semibold text-[#005CB9]">第一阶段: 评估与规划</h3>
+                                <p class="text-gray-600">进行威胁评估、场地勘测、制定交战规则(ROE)，并强调MOSA原则。</p>
+                            </div>
+                             <div class="timeline-item relative">
+                                <h3 class="text-2xl font-semibold text-[#0076D4]">第二阶段: 被动探测(只听只看)</h3>
+                                <p class="text-gray-600">部署RF、光电等被动传感器，建立基础态势感知能力，收集活动数据。</p>
+                            </div>
+                             <div class="timeline-item relative">
+                                <h3 class="text-2xl font-semibold text-[#4195E0]">第三阶段: 集成主动传感</h3>
+                                <p class="text-gray-600">集成雷达等主动传感器，形成完整DTI体系，深化C2功能，对接外部系统。</p>
+                            </div>
+                             <div class="timeline-item relative">
+                                <h3 class="text-2xl font-semibold text-[#8AC3F0]">第四阶段: 部署分级处置</h3>
+                                <p class="text-gray-600">在系统成熟稳定后，审慎部署处置能力，遵循“由软到硬”原则。</p>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-12 pt-8 border-t border-[#8AC3F0]">
+            <p class="text-sm text-gray-500">本信息图根据《低空无人机智能防御系统工程可实施性设计蓝图》报告制作。</p>
+            <p class="text-sm text-gray-500">所有图表和流程均为概念示意，不代表具体产品性能。仅用于说明设计原则。</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const brilliantBlues = {
+            dark: '#00449E',
+            mediumDark: '#005CB9',
+            medium: '#0076D4',
+            mediumLight: '#4195E0',
+            light: '#8AC3F0'
+        };
+
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + ' ' + words[i]).length > maxWidth) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine += ' ' + words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            }
+            return label;
+        };
+        
+        const commonChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#374151',
+                        font: {
+                            family: "'Noto Sans SC', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('threatActorsChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['无意闯入者', '犯罪/非法活动', '恐怖/敌对行为', '国家/军事应用'],
+                datasets: [{
+                    label: '威胁来源分布',
+                    data: [65, 20, 10, 5],
+                    backgroundColor: [
+                        brilliantBlues.light,
+                        brilliantBlues.mediumLight,
+                        brilliantBlues.medium,
+                        brilliantBlues.dark,
+                    ],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2
+                }]
+            },
+            options: { ...commonChartOptions,
+                plugins: { ...commonChartOptions.plugins,
+                    title: {
+                        display: true,
+                        text: '无人机威胁行为体与意图光谱',
+                        color: brilliantBlues.dark,
+                        font: { size: 16, weight: 'bold' }
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('dtiTechChart'), {
+            type: 'radar',
+            data: {
+                labels: ['作用距离', '全天候能力', '识别精度', wrapLabel('抗城市干扰', 10), '相对成本'],
+                datasets: [{
+                    label: '雷达',
+                    data: [5, 5, 3, 2, 4],
+                    backgroundColor: 'rgba(0, 68, 158, 0.2)',
+                    borderColor: brilliantBlues.dark,
+                    pointBackgroundColor: brilliantBlues.dark,
+                }, {
+                    label: 'RF射频',
+                    data: [4, 5, 4, 2, 2],
+                    backgroundColor: 'rgba(0, 118, 212, 0.2)',
+                    borderColor: brilliantBlues.medium,
+                    pointBackgroundColor: brilliantBlues.medium,
+                }, {
+                    label: '光电/红外',
+                    data: [3, 2, 5, 4, 3],
+                    backgroundColor: 'rgba(65, 149, 224, 0.2)',
+                    borderColor: brilliantBlues.mediumLight,
+                    pointBackgroundColor: brilliantBlues.mediumLight,
+                }]
+            },
+            options: { ...commonChartOptions,
+                scales: {
+                    r: {
+                        angleLines: { color: '#D1D5DB' },
+                        grid: { color: '#E5E7EB' },
+                        pointLabels: { 
+                            font: { size: 12 },
+                            color: '#1F2937'
+                        },
+                        ticks: {
+                            display: false,
+                            stepSize: 1
+                        },
+                        min: 0,
+                        max: 5
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('mitigationTechChart'), {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('RF干扰', 16), wrapLabel('协议接管', 16), '高能激光', wrapLabel('动能武器', 16)],
+                datasets: [{
+                    label: '城市适用性',
+                    data: [4, 5, 2, 1],
+                    backgroundColor: brilliantBlues.medium,
+                }, {
+                    label: '附带损伤风险 (值越低越好)',
+                    data: [2, 1, 2, 5],
+                    backgroundColor: brilliantBlues.light,
+                }]
+            },
+            options: { ...commonChartOptions,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 5,
+                        ticks: { color: '#4B5563' }
+                    },
+                    x: {
+                        ticks: { color: '#4B5563', font: { size: 10 } }
+                    }
+                },
+                plugins: { ...commonChartOptions.plugins,
+                    tooltip: {
+                        ...commonChartOptions.plugins.tooltip,
+                        mode: 'index',
+                        intersect: false,
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

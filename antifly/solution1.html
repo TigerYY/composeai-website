@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式低空智能防御系统方案</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 
+        Chosen Palette: Tech Harmony (A calm and professional palette with warm neutrals and subtle blue accents)
+    -->
+    <!-- 
+        Application Structure Plan: The SPA is designed as an interactive dashboard, not a linear report. A sticky navigation bar allows users to jump to key thematic sections: Core Principles, System Architecture, Hardware/Software Explorer, and Deployment Scenarios. The core of the app is the 'Explorer', which uses interactive tabs and cards instead of static tables to present the system's components (Sensing, Command, Disposal). This non-linear, task-oriented structure allows users to freely explore the system's components based on their interests, significantly enhancing usability and engagement compared to a simple scrollable document. User flow is guided by clear calls to action and visual cues, encouraging exploration from high-level concepts down to specific hardware details.
+    -->
+    <!-- 
+        Visualization & Content Choices: 
+        - Core Principles: Goal: Inform -> Presentation: Interactive Cards -> Interaction: Hover to highlight -> Justification: Provides a visually engaging summary of key concepts.
+        - System Architecture: Goal: Organize -> Presentation: HTML/CSS Diagram -> Interaction: Hover to reveal details of each layer -> Justification: Clearly visualizes the OODA loop and system layers without the overhead of SVG, making it lightweight and interactive.
+        - Hardware/Software Configuration: Goal: Compare/Organize -> Presentation: Tabbed interface with interactive cards -> Interaction: Click tabs to switch layers, click cards to see details -> Justification: Transforms static tables into a modern, user-friendly explorer, improving data digestibility and interaction.
+        - Deployment Scenarios: Goal: Compare -> Presentation: Tabbed content display -> Interaction: Click tabs to switch scenarios -> Justification: Allows for direct and easy comparison of deployment strategies for different environments.
+        All choices are made to maximize user engagement and understanding within a single-page format, adhering to the NO SVG/Mermaid constraint.
+    -->
+    <!-- 
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f8f9fa; /* Light warm gray background */
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #0d6efd; /* Primary blue */
+            border-bottom-color: #0d6efd;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+        .tab-button.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .architecture-node {
+            border: 2px solid #6c757d; /* Muted border */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            background-color: white;
+            cursor: pointer;
+        }
+        .architecture-node .details {
+            display: none;
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            background-color: #212529; /* Dark background for tooltip */
+            color: white;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 10;
+            font-size: 0.875rem;
+            line-height: 1.25rem;
+        }
+        .architecture-node:hover .details {
+            display: block;
+        }
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #6c757d;
+            margin: 0 0.5rem;
+        }
+        #component-details {
+            background-color: #e9ecef; /* Lighter detail pane */
+            min-height: 300px;
+        }
+    </style>
+</head>
+<body class="text-[#212529]">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 lg:px-8 flex justify-between items-center py-4">
+            <a href="#" class="text-xl lg:text-2xl font-bold text-[#0d6efd]">低空智能防御系统</a>
+            <div class="hidden md:flex items-center space-x-6 lg:space-x-8 text-gray-600 font-medium">
+                <a href="#principles" class="nav-link py-2">核心原则</a>
+                <a href="#architecture" class="nav-link py-2">系统架构</a>
+                <a href="#explorer" class="nav-link py-2">系统详解</a>
+                <a href="#scenarios" class="nav-link py-2">部署方案</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-2xl">☰</button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white px-4 pb-4 space-y-2">
+            <a href="#principles" class="block py-2 text-gray-600 hover:text-[#0d6efd]">核心原则</a>
+            <a href="#architecture" class="block py-2 text-gray-600 hover:text-[#0d6efd]">系统架构</a>
+            <a href="#explorer" class="block py-2 text-gray-600 hover:text-[#0d6efd]">系统详解</a>
+            <a href="#scenarios" class="block py-2 text-gray-600 hover:text-[#0d6efd]">部署方案</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 lg:px-8 py-8 md:py-12">
+
+        <!-- Hero Section -->
+        <section class="text-center mb-16 md:mb-24">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 text-[#212529]">面向中国关键场景的“查打一体”系统方案</h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">一个将先进探测技术、人工智能与模块化设计深度融合的现代化低空防御解决方案。</p>
+        </section>
+
+        <!-- Core Principles -->
+        <section id="principles" class="mb-16 md:mb-24">
+            <h2 class="text-3xl font-bold text-center mb-10">五大核心设计原则</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-8">
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">📜</div>
+                    <h3 class="text-xl font-semibold mb-2">合法合规</h3>
+                    <p class="text-gray-600 text-sm">严格遵循国家法规，确保与监管部门的无缝对接与协同。</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="text-xl font-semibold mb-2">分层防御</h3>
+                    <p class="text-gray-600 text-sm">构建纵深防御体系，通过技术互补，逐层过滤确认威胁。</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">🧠</div>
+                    <h3 class="text-xl font-semibold mb-2">AI驱动</h3>
+                    <p class="text-gray-600 text-sm">以人工智能为核心，实现数据融合、智能评估与辅助决策。</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">🧩</div>
+                    <h3 class="text-xl font-semibold mb-2">开放架构</h3>
+                    <p class="text-gray-600 text-sm">遵循MOSA理念，确保系统的可扩展性与可升级性，降低成本。</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-4xl mb-4">⚙️</div>
+                    <h3 class="text-xl font-semibold mb-2">场景自适应</h3>
+                    <p class="text-gray-600 text-sm">提供灵活配置的模块和方案，适应不同场景的实战需求。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Architecture -->
+        <section id="architecture" class="mb-16 md:mb-24">
+            <h2 class="text-3xl font-bold text-center mb-10">OODA闭环系统架构</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">本系统由“感知层”、“指挥层”和“处置层”构成一个完整的OODA（观察-判断-决策-行动）作战闭环。将鼠标悬停在节点上以查看详细信息。</p>
+            <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4">
+                <div class="architecture-node">
+                    <h3 class="font-bold text-lg text-[#0d6efd]">感知层</h3>
+                    <p class="text-sm font-semibold">观察 (Observe)</p>
+                    <div class="details">系统的“眼睛”和“耳朵”，由雷达、射频、光电等多种探测设备组成，负责全天候、全方位地搜索、发现和跟踪空中目标。</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="architecture-node">
+                    <h3 class="font-bold text-lg text-[#0d6efd]">指挥层</h3>
+                    <p class="text-sm font-semibold">判断/决策 (Orient/Decide)</p>
+                     <div class="details">系统的“大脑”，以“御空”智能指控平台为核心，负责融合处理感知层数据，形成统一态势图，进行威胁评估与辅助决策。</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="architecture-node">
+                    <h3 class="font-bold text-lg text-[#0d6efd]">处置层</h3>
+                    <p class="text-sm font-semibold">行动 (Act)</p>
+                     <div class="details">系统的“拳头”，根据指挥层的指令，调用最优的软、硬杀伤手段对威胁目标实施有效处置。</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- System Explorer -->
+        <section id="explorer" class="mb-16 md:mb-24">
+            <h2 class="text-3xl font-bold text-center mb-10">系统组件详解</h2>
+            <p class="text-center text-gray-600 max-w-2xl mx-auto mb-12">点击下方的标签页切换系统层级，然后点击组件卡片查看其详细作用与部署侧重。</p>
+            
+            <div class="flex justify-center mb-8 border-b border-gray-300">
+                <button data-tab="sensing" class="tab-button text-lg font-semibold py-3 px-6 text-gray-600 border-b-2 border-transparent hover:border-gray-400 transition active">感知探测单元</button>
+                <button data-tab="command" class="tab-button text-lg font-semibold py-3 px-6 text-gray-600 border-b-2 border-transparent hover:border-gray-400 transition">指挥控制单元</button>
+                <button data-tab="disposal" class="tab-button text-lg font-semibold py-3 px-6 text-gray-600 border-b-2 border-transparent hover:border-gray-400 transition">打击处置单元</button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div id="components-grid" class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Component cards will be injected here by JS -->
+                </div>
+                <div id="component-details" class="lg:col-span-1 p-6 rounded-lg flex items-center justify-center">
+                    <p class="text-gray-500 text-center">点击左侧卡片查看详情</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deployment Scenarios -->
+        <section id="scenarios" class="mb-16 md:mb-24">
+             <h2 class="text-3xl font-bold text-center mb-10">典型场景部署方案</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-center mb-8 border-b border-gray-300">
+                    <button data-scenario="airport" class="scenario-tab-button text-lg font-semibold py-3 px-6 text-gray-600 border-b-2 border-transparent hover:border-gray-400 transition active">✈️ 机场要地</button>
+                    <button data-scenario="gov" class="scenario-tab-button text-lg font-semibold py-3 px-6 text-gray-600 border-b-2 border-transparent hover:border-gray-400 transition">🏛️ 政府要地</button>
+                    <button data-scenario="event" class="scenario-tab-button text-lg font-semibold py-3 px-6 text-gray-600 border-b-2 border-transparent hover:border-gray-400 transition">🏟️ 重大活动</button>
+                </div>
+                <div id="scenario-content" class="card p-8">
+                    <!-- Scenario content will be injected here by JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-white border-t border-gray-200">
+        <div class="container mx-auto py-6 text-center text-gray-500">
+            <p>&copy; 2025 交互式低空智能防御系统方案</p>
+            <p class="text-sm mt-1">根据《面向中国关键场景的低空智能防御查打一体系统方案》报告生成</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Data from the report
+            const systemData = {
+                sensing: [
+                    { name: '有源相控阵雷达', spec: 'Ku波段、三坐标、AESA体制', role: '<strong>远程预警核心</strong>。提供广域、全天候、高精度的早期预警和目标指示。', focus: '<strong>机场/开阔地带</strong>：作为骨干探测手段。<br><strong>城市</strong>：作为关键区域的补充。' },
+                    { name: '被动射频(RF)探测', spec: '全向/定向侦测设备', role: '<strong>识别型号与定位飞手</strong>。被动式探测，可识别主流无人机品牌型号，并对飞手进行测向。', focus: '<strong>所有场景</strong>：作为雷达的必要补充，尤其在城市电磁复杂环境中。' },
+                    { name: '光电/红外联动云台', spec: '30倍以上光学变焦、高清热成像', role: '<strong>精确识别与取证</strong>。在雷达/RF引导下，对目标进行可视化确认，识别载荷，留存法律证据。', focus: '<strong>所有场景</strong>：是完成“识别”环节、闭合杀伤链的关键。' },
+                    { name: '声学探测传感器', spec: '分布式麦克风阵列', role: '<strong>补充填盲</strong>。成本低，可探测非视距目标，作为雷达和光电在近距离的补充。', focus: '<strong>政府要地/安静区域</strong>：在特定区域填补视线盲区。' },
+                ],
+                command: [
+                    { name: '核心计算服务器', spec: '高性能机架式服务器', role: '运行数据融合引擎、AI算法模型和指控平台软件，是系统的计算核心。', focus: '' },
+                    { name: '一体化显控终端', spec: '多屏高清显示工作站', role: '提供人机交互界面，显示统一作战态势图，供操作员进行监控、分析和决策。', focus: '' },
+                    { name: '“御空”智能指控平台', spec: '软件平台', role: '<ul><li class="mb-1"><strong>多源异构数据融合引擎</strong></li><li class="mb-1"><strong>AI赋能的智能识别与评估</strong></li><li class="mb-1"><strong>一体化GIS态势显示</strong></li><li class="mb-1"><strong>自动化响应与预案管理</strong></li><li><strong>全过程记录与复盘分析</strong></li></ul>', focus: '该平台是整个系统的“大脑”和决策中枢。' }
+                ],
+                disposal: [
+                    { name: '定向射频干扰设备', spec: '导航/图传/遥控多频段干扰', role: '<strong>区域拒止/迫降</strong>。低附带损伤，适用性广。符合《条例》管理规定，需授权使用。', focus: '<strong>机场/重大活动</strong>：作为主要软杀伤手段，快速、高效。' },
+                    { name: '无人机协议破解/接管', spec: '针对主流品牌（如大疆）', role: '<strong>精准捕获</strong>。可完整接管无人机并引导其降落至指定地点。安全性最高，零附带损伤。', focus: '<strong>政府核心区/城市中心</strong>：对安全要求极高的场景下的首选处置手段。' },
+                    { name: '无人机捕捉网系统', spec: '车载或固定式发射器', role: '<strong>物理拦截（备用）</strong>。在特定条件下（如开阔区域、软杀伤无效），作为最后的物理拦截手段。', focus: '<strong>机场跑道外围/开阔地带</strong>：作为硬杀伤的补充。' },
+                ]
+            };
+
+            const scenarioData = {
+                airport: {
+                    title: '✈️ 机场要地部署方案',
+                    content: `
+                        <h4 class="font-semibold text-lg mb-2">布局策略：</h4>
+                        <p class="mb-4">沿机场围界部署2-3套远程相控阵雷达，构成360度无死角预警圈。在跑道两端、航站楼等关键区域部署光电联动云台和定向RF探测设备。</p>
+                        <h4 class="font-semibold text-lg mb-2">集成方案：</h4>
+                        <p class="mb-4">与民航空管部门建立数据接口，接收ADS-B等“白名单”信息，预先过滤合作目标。将确认后的高危威胁情报，以简洁格式推送至塔台指挥席。</p>
+                        <h4 class="font-semibold text-lg mb-2">处置原则：</h4>
+                        <p>以“探测-识别-通报-干扰”为主要流程。主要使用定向RF干扰迫使无人机返航或降落。协议接管作为备用手段。</p>
+                    `
+                },
+                gov: {
+                    title: '🏛️ 政府要地/城市中心部署方案',
+                    content: `
+                        <h4 class="font-semibold text-lg mb-2">布局策略：</h4>
+                        <p class="mb-4">采用“网格化、高点位”部署。在区域内多栋建筑制高点部署小型Ku波段雷达、RF探测器和光电云台，形成相互交叉、无盲区的覆盖网络。</p>
+                        <h4 class="font-semibold text-lg mb-2">集成方案：</h4>
+                        <p class="mb-4">与公安指挥中心、属地派出所建立联动机制，一旦捕获无人机，可立即通知地面警力前往处置。</p>
+                        <h4 class="font-semibold text-lg mb-2">处置原则：</h4>
+                        <p>对安全和附带损伤的要求达到极致。<strong>协议破解/接管</strong>是唯一推荐的主动处置手段。在无法接管的情况下，以持续跟踪、定位飞手并通报公安为首选。</p>
+                    `
+                },
+                event: {
+                    title: '🏟️ 重大活动（临时）部署方案',
+                    content: `
+                        <h4 class="font-semibold text-lg mb-2">布局策略：</h4>
+                        <p class="mb-4">以高机动性的车载系统为主。将雷达、光电、RF探测和处置设备集成于指挥车上，活动开始前快速机动至核心区制高点展开。在周边部署若干便携式RF探测器，构成警戒圈。</p>
+                        <h4 class="font-semibold text-lg mb-2">运营模式：</h4>
+                        <p class="mb-4">可采用“反无人机即服务”（CaaS）模式，由专业安保团队提供设备、人员和全流程服务，以应对临时性、短周期的安保需求。</p>
+                        <h4 class="font-semibold text-lg mb-2">处置原则：</h4>
+                        <p>结合使用定向干扰和协议接管。根据活动现场的人群密度和环境，灵活切换处置方式。</p>
+                    `
+                }
+            };
+
+            const componentsGrid = document.getElementById('components-grid');
+            const componentDetails = document.getElementById('component-details');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const scenarioTabButtons = document.querySelectorAll('.scenario-tab-button');
+            const scenarioContent = document.getElementById('scenario-content');
+            
+            function renderComponents(tab) {
+                componentsGrid.innerHTML = '';
+                const data = systemData[tab];
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'component-card card p-4 cursor-pointer';
+                    card.innerHTML = `<h3 class="font-bold text-lg text-[#0d6efd]">${item.name}</h3><p class="text-sm text-gray-500">${item.spec}</p>`;
+                    card.addEventListener('click', () => {
+                        renderDetails(item);
+                        document.querySelectorAll('.component-card').forEach(c => c.classList.remove('ring-2', 'ring-[#0d6efd]'));
+                        card.classList.add('ring-2', 'ring-[#0d6efd]');
+                    });
+                    componentsGrid.appendChild(card);
+                });
+            }
+
+            function renderDetails(item) {
+                let focusHtml = item.focus ? `<h4 class="font-semibold text-md mt-4 mb-1">部署场景侧重:</h4><p class="text-sm text-gray-700">${item.focus}</p>` : '';
+                componentDetails.innerHTML = `
+                    <div class="w-full">
+                        <h3 class="font-bold text-xl mb-2">${item.name}</h3>
+                        <p class="text-sm text-gray-500 mb-4">${item.spec}</p>
+                        <div class="border-t border-gray-300 pt-4">
+                            <h4 class="font-semibold text-md mb-1">核心作用:</h4>
+                            <div class="text-sm text-gray-700">${item.role}</div>
+                            ${focusHtml}
+                        </div>
+                    </div>
+                `;
+            }
+
+            function renderScenario(scenario) {
+                 scenarioContent.innerHTML = `
+                    <h3 class="text-2xl font-bold mb-6 text-center text-[#0d6efd]">${scenarioData[scenario].title}</h3>
+                    ${scenarioData[scenario].content}
+                `;
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tab = button.dataset.tab;
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    renderComponents(tab);
+                    componentDetails.innerHTML = '<p class="text-gray-500 text-center">点击左侧卡片查看详情</p>';
+                });
+            });
+            
+            scenarioTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const scenario = button.dataset.scenario;
+                    scenarioTabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    renderScenario(scenario);
+                });
+            });
+
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Initial render
+            renderComponents('sensing');
+            renderScenario('airport');
+
+            // Scrollspy for navigation
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

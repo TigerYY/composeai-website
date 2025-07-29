@@ -207,3 +207,6 @@ git commit -m "Initial website setup"
 **构图大师ComposeAI** - 用AI重新定义摄影构图
 
 © 2024 ComposeAI. All rights reserved.
+
+##同步网站：
+rsync -avz --delete --rsync-path="sudo rsync" ./ yy@composeai.net:/var/www/composeai/
